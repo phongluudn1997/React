@@ -7,8 +7,7 @@ An Effect lets you keep your component synchronized with some external systems (
 ### Example
 Connecting to a chat server
 ```tsx
-function ChatRoom({roomId}) {
-    const [serverUrl, setServerUrl] = useState("https://localhost:1234")
+function useChatRoom({serverUrl, roomId}) {
     useEffect(() => {
         const connection = createConnection(serverUrl, roomId);
         connection.connect();
@@ -16,6 +15,10 @@ function ChatRoom({roomId}) {
             connection.disconnect();
         }
     }, [serverUrl, roomId])
+}
+function ChatRoom({roomId}) {
+    const [serverUrl, setServerUrl] = useState("https://localhost:1234")
+    useChatRoom({serverUrl, roomId})
 }
 
 function App() {
