@@ -40,3 +40,61 @@ function App() {
     )
 }
 ```
+
+Tracking element visibiliy
+External system: browser DOM.
+```tsx
+function useIntersectionObserver(ref) {
+    const [isIntersecting, setIsIntersecting] = useState(false)
+    useEffect(() => {
+        const div = ref.current
+        const observer = new IntersectionObserver(entries => {
+            const entry = entries[0];
+            setIsIntersecting(entry.intersecting)
+        }, {
+            threshold: 1.0
+        });
+        observer.observe(div);
+        return () => observer.disconnect()
+    }, [ref])
+}
+```
+
+Fetch data with useEffect
+```tsx
+function Page() {
+    const [person, setPerson] = useState("Alice");
+    const [bio, setBio] = useState()
+
+    useEffect(() => {
+        // race condition
+        let ignore = false
+        async function startFetching() {
+            const result = await fetchBio(person);
+            if (!ignore) {
+                setBio(result)
+            }
+        }
+        startFetching()
+        return () => {
+            ignore = true
+        }
+    }, [person])
+
+    return (
+        <select value="Alice" onChange={event => setPerson(event.target.value)}>
+            <option value="Alice">Alice</option>
+            <option value="Bob">Alice</option>
+            <option value="Taylor">Alice</option>
+        </select>
+    )
+}
+```
+Pitfalls of data fetching in Effects
+* Effects don't run on the server: Client computer will have to download Javascript only to dicover that now it needs to load data.
+* Network waterfalls: Parent component fetch data, redern child components - start fetching their own data. If network is not very fast, this is significantly slower than fetching all data in parallel.
+* No preload or cache data: If component unmounts and then mounts again, data is fetching again
+* No ergonoic: A lot of boilerplate to handle bugs like race conditions.
+Solution:
+* Use React framework
+* Client-side cache: React Query, useSWR, React Router
