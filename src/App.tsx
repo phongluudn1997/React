@@ -1,9 +1,10 @@
 import './App.css'
-import {Form} from "./example/form.tsx";
+import {FilteredProductTable} from "./example/product-table/FilteredProducTable.tsx";
+import {PRODUCTS} from "./example/product-table/data.tsx";
 
 function App() {
     return (
-        <Form/>
+        <FilteredProductTable products={PRODUCTS}/>
     )
 }
 
