@@ -1,7 +1,17 @@
 import {useEffect, useReducer} from "react";
+import {delay} from "../utils/delay.ts";
 
 interface UseQueryOptions<TData> {
     initialData?: TData
+}
+
+const fetchUserData = async () => {
+    await delay(1000);
+    return [{
+        id: 1,
+        name: "Alice",
+        email: "alice@mail.com"
+    }]
 }
 
 export function useQuery<TData = unknown, TError = unknown>(
