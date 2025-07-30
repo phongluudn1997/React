@@ -15,7 +15,7 @@ type AccordionChildProps = React.PropsWithChildren<{
  * Pass state to only 1st level children with cloneElement
  * Should
  */
-export const Accordion = ({children, defaultOpen = false}: AccordionProps) => {
+export const BasicAccordion = ({children, defaultOpen = false}: AccordionProps) => {
     const [isOpen, setIsOpen] = useState(defaultOpen)
     return <div>
         {Children.map<React.ReactElement, React.ReactElement<AccordionChildProps>>(children, child => {
@@ -25,24 +25,24 @@ export const Accordion = ({children, defaultOpen = false}: AccordionProps) => {
     </div>
 }
 
-Accordion.Header = ({children, isOpen, setIsOpen}: AccordionChildProps) => {
+BasicAccordion.Header = ({children, isOpen, setIsOpen}: AccordionChildProps) => {
     return <button onClick={() => setIsOpen(isOpen => !isOpen)}>
         <span>{children}</span>
         {isOpen ? <ChevronDown/> : <ChevronRight/>}
     </button>
 }
 
-Accordion.Content = ({children, isOpen}: AccordionChildProps) => {
+BasicAccordion.Content = ({children, isOpen}: AccordionChildProps) => {
     return isOpen && <div>{children}</div>
 }
 
 export const AccordionExample = () => {
-    return <Accordion defaultOpen>
-        <Accordion.Header>
+    return <BasicAccordion defaultOpen>
+        <BasicAccordion.Header>
             Trigger button
-        </Accordion.Header>
-        <Accordion.Content>
+        </BasicAccordion.Header>
+        <BasicAccordion.Content>
             <p>Some Content</p>
-        </Accordion.Content>
-    </Accordion>
+        </BasicAccordion.Content>
+    </BasicAccordion>
 }
