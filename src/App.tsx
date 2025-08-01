@@ -1,10 +1,8 @@
-import './App.css'
-import {DebouncedSearchInput} from "./example/debounceSearchInput.tsx";
+import { MouseTrackerExample } from "./advanced-patterns/render-props/MouseTracker";
+import "./App.css";
 
 function App() {
-    return (
-        <DebouncedSearchInput/>
-    )
+  return <MouseTrackerExample />;
 }
 
-export default App
+export default App;
