@@ -1,10 +1,10 @@
 import "./App.css";
-import { MultiStepsFormExample } from "./example/multi-steps-form/compound-components/MultiStepsForm";
+import { MultiStepsForm } from "./example/multi-steps-form/hooks/MultistepForm";
 
 function App() {
   return (
     <div className="flex items-center content-center">
-      <MultiStepsFormExample />
+      <MultiStepsForm />
     </div>
   );
 }

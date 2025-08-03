@@ -26,6 +26,9 @@ export const MultiStepsForm = ({
     event.preventDefault();
     onSubmit(formState);
   };
+
+  const steps = Children.count(children);
+
   return (
     <form onSubmit={handleSubmit}>
       {Children.map(children, (child, index) => {
