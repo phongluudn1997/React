@@ -1,10 +1,10 @@
 import "./App.css";
-import { MultiStepsForm } from "./example/multi-steps-form/hooks/MultistepForm";
+import { InteractiveTableExample } from "./example/interactive-table/InteractiveTable";
 
 function App() {
   return (
     <div className="flex items-center content-center">
-      <MultiStepsForm />
+      <InteractiveTableExample />
     </div>
   );
 }
