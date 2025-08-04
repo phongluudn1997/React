@@ -1,10 +1,10 @@
 import "./App.css";
-import { InteractiveTableExample } from "./example/interactive-table/InteractiveTable";
+import { Form } from "./example/form";
 
 function App() {
   return (
     <div className="flex items-center content-center">
-      <InteractiveTableExample />
+      <Form />
     </div>
   );
 }
