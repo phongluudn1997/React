@@ -1,15 +1,12 @@
 import {
+  type ChangeEvent,
   Children,
   cloneElement,
-  isValidElement,
-  type ChangeEvent,
   type FormEvent,
+  isValidElement,
   type PropsWithChildren,
-} from "react";
-import {
-  MultiStepsFormProvider,
-  useMultiStepsForm,
-} from "./MultiStepsFormProvider";
+} from 'react';
+import { MultiStepsFormProvider, useMultiStepsForm } from './MultiStepsFormProvider';
 
 interface SingleStepFormProps {
   step: number;
@@ -42,10 +39,7 @@ export const MultiStepsForm = ({
   );
 };
 
-const Step = ({
-  children,
-  step,
-}: React.PropsWithChildren<{ step: number }>) => {
+const Step = ({ children, step }: React.PropsWithChildren<{ step: number }>) => {
   const { currentStep } = useMultiStepsForm();
   return currentStep === step ? (
     <div>
@@ -55,21 +49,17 @@ const Step = ({
   ) : null;
 };
 
-const NavigateButton = ({
-  children,
-  type,
-}: PropsWithChildren<{ type: "next" | "previous" }>) => {
+const NavigateButton = ({ children, type }: PropsWithChildren<{ type: 'next' | 'previous' }>) => {
   const { setCurrentStep, currentStep } = useMultiStepsForm();
 
   const handleClick = () => {
-    setCurrentStep((step) => (type === "next" ? step + 1 : step - 1));
+    setCurrentStep((step) => (type === 'next' ? step + 1 : step - 1));
   };
 
   return (
     <button
       disabled={
-        (type === "previous" && currentStep === 0) ||
-        (type === "next" && currentStep === 1)
+        (type === 'previous' && currentStep === 0) || (type === 'next' && currentStep === 1)
       }
       type="button"
       onClick={handleClick}
@@ -88,8 +78,7 @@ interface InputProps {
 }
 
 const Input = ({ name, validation }: InputProps) => {
-  const { formState, errorState, setFormState, setErrorState } =
-    useMultiStepsForm();
+  const { formState, errorState, setFormState, setErrorState } = useMultiStepsForm();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormState((formState) => ({
@@ -100,7 +89,7 @@ const Input = ({ name, validation }: InputProps) => {
       const pass = validation.handler(event.target.value);
       setErrorState((errorState) => ({
         ...errorState,
-        [name]: pass ? "" : validation.message,
+        [name]: pass ? '' : validation.message,
       }));
     }
   };
@@ -108,12 +97,7 @@ const Input = ({ name, validation }: InputProps) => {
   return (
     <label>
       {name}:
-      <input
-        type="text"
-        value={formState[name] || ""}
-        name={name}
-        onChange={handleChange}
-      />
+      <input type="text" value={formState[name] || ''} name={name} onChange={handleChange} />
       {errorState[name]}
     </label>
   );
@@ -143,7 +127,7 @@ export const MultiStepsFormExample = () => {
             name="email"
             validation={{
               handler: (value) => /\S+@\S+\.\S+/.test(value),
-              message: "Email must match the pattern",
+              message: 'Email must match the pattern',
             }}
           />
         </Step>
