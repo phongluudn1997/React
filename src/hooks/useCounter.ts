@@ -1,21 +1,54 @@
-import {useEffect, useState} from "react";
+import * as React from 'react';
 
-/**
- * Since count is a reactive value, it must be specified in the list of dependencies. However, that causes the Effect to cleanup and setup again every time the count changes. This is not ideal.
- * To fix this, pass the c => c + 1 state updater to setCount:
- */
-export const useCounter = () => {
-    const [counter, setCounter] = useState<number>(0);
+type UseCounterOptions = {
+  initialCountValue?: number;
+  options?: {
+    min?: number;
+    max?: number;
+    step?: number;
+  };
+};
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCounter((counter) => counter + 1);
-        }, 1000);
+export const useCounter = ({ initialCountValue = 0, options = {} }: UseCounterOptions) => {
+  const [counter, setCounter] = React.useState<number>(initialCountValue);
+  const { max, min, step = 1 } = options;
 
-        return () => {
-            clearInterval(intervalId);
-        };
-    }, []);
+  if (min && initialCountValue < min) {
+    throw new Error(`Invalid settings. InitialValue ${initialCountValue} is less than min ${min}.`);
+  }
 
-    return {counter}
-}
+  if (max && initialCountValue > max) {
+    throw new Error(
+      `Invalid settings. InitialValue ${initialCountValue} is greater than max ${max}`,
+    );
+  }
+
+  const increment = React.useCallback(
+    () =>
+      setCounter((counter) => {
+        const newMax = counter + step;
+        return max ? (newMax <= max ? newMax : counter) : newMax;
+      }),
+    [max, step],
+  );
+
+  const decrement = React.useCallback(() => {
+    setCounter((counter) => {
+      const newMin = counter - step;
+      return min ? (newMin >= min ? newMin : counter) : newMin;
+    });
+  }, [min, step]);
+
+  const set = React.useCallback(
+    (newCounter: number) =>
+      setCounter((counter) => {
+        const isValid = max ? newCounter <= max : min ? newCounter >= min : true;
+        return isValid ? newCounter : counter;
+      }),
+    [max, min],
+  );
+
+  const reset = React.useCallback(() => setCounter(initialCountValue), [initialCountValue]);
+
+  return [counter, { increment, decrement, set, reset }];
+};
